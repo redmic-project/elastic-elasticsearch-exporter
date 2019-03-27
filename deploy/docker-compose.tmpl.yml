@@ -21,7 +21,7 @@ services:
       - metric-net
       - traefik-net
     healthcheck:
-      test: curl --silent --output /dev/null http://localhost:${WEB_LISTEN-ADDRESS}
+      test: wget --spider http://localhost:${WEB_LISTEN-ADDRESS}
       interval: 30s
       timeout: 10s
       retries: 3
