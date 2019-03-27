@@ -15,13 +15,13 @@ services:
       - ES_TIMEOUT
       - ES_CLUSTERINFO_INTERVAL
       - ES_SSL-SKIP-VERIFY
-      - WEB_LISTEN-ADDRESS
+      - WEB_LISTEN-ADDRESS=${UI_PORT}
     networks:
       - elastic-net
       - metric-net
       - traefik-net
     healthcheck:
-      test: wget --spider http://localhost:${WEB_LISTEN-ADDRESS}
+      test: wget --spider http://localhost:${UI_PORT}
       interval: 30s
       timeout: 10s
       retries: 3
@@ -33,7 +33,7 @@ services:
         traefik.frontend.auth.basic.users: ${UI_AUTH}
         traefik.frontend.rule: Host:${UI_SUBDOMAIN}.${PUBLIC_HOSTNAME}
         traefik.backend: elasticsearch-exporter
-        traefik.port: "${WEB_LISTEN-ADDRESS}"
+        traefik.port: '${UI_PORT}'
       restart_policy:
         delay: 30s
         window: 1m
