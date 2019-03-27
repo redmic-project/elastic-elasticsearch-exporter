@@ -4,7 +4,7 @@ services:
   elasticsearch-exporter:
     image: ${IMAGE_NAME:-justwatch/elasticsearch_exporter}:${IMAGE_TAG:-1.1.0rc1}
     environment:
-      - ES_URI='${ES_PROTOCOL}://${ES_USER}:${ES_PASS}@${ES_HOST}:${ES_PORT}'
+      - ES_URI=${ES_PROTOCOL}://${ES_USER}:${ES_PASS}@${ES_HOST}:${ES_PORT}
       - ES_ALL
       - ES_CLUSTER_SETTINGS
       - ES_INDICES
