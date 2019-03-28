@@ -19,7 +19,6 @@ services:
     networks:
       - elastic-net
       - metric-net
-      - traefik-net
     healthcheck:
       test: wget --spider http://localhost:${UI_PORT}
       interval: 30s
@@ -29,11 +28,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      labels:
-        traefik.frontend.auth.basic.users: ${UI_AUTH}
-        traefik.frontend.rule: Host:${UI_SUBDOMAIN}.${PUBLIC_HOSTNAME}
-        traefik.backend: elasticsearch-exporter
-        traefik.port: '${UI_PORT}'
       restart_policy:
         delay: 30s
         window: 1m
@@ -51,8 +45,4 @@ networks:
 
   metric-net:
     name: ${METRIC_NET_NAME:-metric-net}
-    external: true
-
-  traefik-net:
-    name: ${TRAEFIK_NET_NAME:-traefik-net}
     external: true
