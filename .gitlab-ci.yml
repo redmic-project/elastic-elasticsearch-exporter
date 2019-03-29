@@ -15,7 +15,7 @@ deploy-supporting-branch-develop:
   stage: deploy
   variables:
     SSH_REMOTE: ${DEV_SSH_REMOTE}
-    SERVICES_TO_CHECK: ${STACK}_elasticsearch-exporter
+    SERVICES_TO_CHECK: ${STACK}_${CI_PROJECT_NAME}
     COMPOSE_FILE: docker-compose.tmpl.yml:docker-compose.dev.yml
   script:
     - >
@@ -35,7 +35,7 @@ deploy-stable-branch-develop:
   stage: deploy
   variables:
     SSH_REMOTE: ${DEV_SSH_REMOTE}
-    SERVICES_TO_CHECK: ${STACK}_elasticsearch-exporter
+    SERVICES_TO_CHECK: ${STACK}_${CI_PROJECT_NAME}
     COMPOSE_FILE: docker-compose.tmpl.yml:docker-compose.dev.yml
   script:
     - >
@@ -53,7 +53,7 @@ deploy-supporting-branch-production:
   stage: deploy
   variables:
     SSH_REMOTE: ${PRO_SSH_REMOTE}
-    SERVICES_TO_CHECK: ${STACK}_elasticsearch-exporter
+    SERVICES_TO_CHECK: ${STACK}_${CI_PROJECT_NAME}
     COMPOSE_FILE: docker-compose.tmpl.yml:docker-compose.prod.yml
   script:
      - >
@@ -73,7 +73,7 @@ deploy-stable-branch-production:
   stage: deploy
   variables:
     SSH_REMOTE: ${PRO_SSH_REMOTE}
-    SERVICES_TO_CHECK: ${STACK}_elasticsearch-exporter
+    SERVICES_TO_CHECK: ${STACK}_${CI_PROJECT_NAME}
     COMPOSE_FILE: docker-compose.tmpl.yml:docker-compose.prod.yml
   script:
      - >
