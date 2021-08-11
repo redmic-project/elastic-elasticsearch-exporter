@@ -5,7 +5,7 @@ services:
     image: ${IMAGE_NAME:-quay.io/prometheuscommunity/elasticsearch-exporter}:${IMAGE_TAG:-latest}
     environment:
       ES_URI: ${ES_PROTOCOL}://${ES_USER}:${ES_PASS}@${ES_HOST}:${ES_PORT}
-      WEB_LISTEN_ADDRESS: ${UI_PORT}
+      WEB_LISTEN_ADDRESS: :${UI_PORT}
       ES_ALL:
       ES_CLUSTER_SETTINGS:
       ES_INDICES:
