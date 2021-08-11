@@ -19,7 +19,7 @@ services:
       elastic-net:
       metric-net:
     healthcheck:
-      test: wget --spider http://localhost:${UI_PORT}
+      test: wget --spider --quiet http://localhost:${UI_PORT}
       interval: ${HEALTHCHECK_INTERVAL:-30s}
       timeout: ${HEALTHCHECK_TIMEOUT:-15s}
       retries: ${HEALTHCHECK_RETRIES:-10}
