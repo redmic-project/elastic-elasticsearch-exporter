@@ -1,88 +1,11 @@
+include:
+  - project: 'redmic-project/gitlab-ci-templates'
+    ref: master
+    file: '/deployment.yml'
+
 stages:
   - deploy
 
-image: ${DOCKER_DEPLOY_IMAGE_NAME}:${DOCKER_DEPLOY_IMAGE_TAG}
-
-services:
-  - docker:dind
-
-variables:
-  DOCKER_DRIVER: overlay2
-  STACK: elastic
-  IMAGE_TAG: 1.1.0rc1
-
-deploy-supporting-branch-develop:
-  stage: deploy
+.deploy:
   variables:
-    SSH_REMOTE: ${DEV_SSH_REMOTE}
-    SERVICES_TO_CHECK: ${STACK}_${CI_PROJECT_NAME}
-    COMPOSE_FILE: docker-compose.tmpl.yml:docker-compose.dev.yml
-  script:
-    - >
-      deploy.sh IMAGE_TAG=${IMAGE_TAG} COMPOSE_FILE=${COMPOSE_FILE} ES_USER=${ES_USER} ES_PASS=${ES_PASS}
-      ES_HOST=${ES_HOST} ES_ALL=${ES_ALL} ES_CLUSTER_SETTINGS=${ES_CLUSTER_SETTINGS} ES_INDICES=${ES_INDICES}
-      ES_INDICES_SETTINGS=${ES_INDICES_SETTINGS} ES_SHARDS=${ES_SHARDS} ES_SHARDS_SETTINGS=${ES_SHARDS_SETTINGS}
-      ES_SNAPSHOTS=${ES_SNAPSHOTS} ES_TIMEOUT=${ES_TIMEOUT} ES_CLUSTERINFO_INTERVAL=${ES_CLUSTERINFO_INTERVAL}
-  environment:
-    name: dev
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-deploy-stable-branch-develop:
-  stage: deploy
-  variables:
-    SSH_REMOTE: ${DEV_SSH_REMOTE}
-    SERVICES_TO_CHECK: ${STACK}_${CI_PROJECT_NAME}
-    COMPOSE_FILE: docker-compose.tmpl.yml:docker-compose.dev.yml
-  script:
-    - >
-      deploy.sh IMAGE_TAG=${IMAGE_TAG} COMPOSE_FILE=${COMPOSE_FILE} ES_USER=${ES_USER} ES_PASS=${ES_PASS}
-      ES_HOST=${ES_HOST} ES_ALL=${ES_ALL} ES_CLUSTER_SETTINGS=${ES_CLUSTER_SETTINGS} ES_INDICES=${ES_INDICES}
-      ES_INDICES_SETTINGS=${ES_INDICES_SETTINGS} ES_SHARDS=${ES_SHARDS} ES_SHARDS_SETTINGS=${ES_SHARDS_SETTINGS}
-      ES_SNAPSHOTS=${ES_SNAPSHOTS} ES_TIMEOUT=${ES_TIMEOUT} ES_CLUSTERINFO_INTERVAL=${ES_CLUSTERINFO_INTERVAL}
-  environment:
-    name: dev
-  only:
-    - master
-  when: manual
-
-deploy-supporting-branch-production:
-  stage: deploy
-  variables:
-    SSH_REMOTE: ${PRO_SSH_REMOTE}
-    SERVICES_TO_CHECK: ${STACK}_${CI_PROJECT_NAME}
-    COMPOSE_FILE: docker-compose.tmpl.yml:docker-compose.prod.yml
-  script:
-     - >
-      deploy.sh IMAGE_TAG=${IMAGE_TAG} COMPOSE_FILE=${COMPOSE_FILE} ES_USER=${ES_USER} ES_PASS=${ES_PASS}
-      ES_HOST=${ES_HOST} ES_ALL=${ES_ALL} ES_CLUSTER_SETTINGS=${ES_CLUSTER_SETTINGS} ES_INDICES=${ES_INDICES}
-      ES_INDICES_SETTINGS=${ES_INDICES_SETTINGS} ES_SHARDS=${ES_SHARDS} ES_SHARDS_SETTINGS=${ES_SHARDS_SETTINGS}
-      ES_SNAPSHOTS=${ES_SNAPSHOTS} ES_TIMEOUT=${ES_TIMEOUT} ES_CLUSTERINFO_INTERVAL=${ES_CLUSTERINFO_INTERVAL}
-  environment:
-    name: pro
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-deploy-stable-branch-production:
-  stage: deploy
-  variables:
-    SSH_REMOTE: ${PRO_SSH_REMOTE}
-    SERVICES_TO_CHECK: ${STACK}_${CI_PROJECT_NAME}
-    COMPOSE_FILE: docker-compose.tmpl.yml:docker-compose.prod.yml
-  script:
-     - >
-      deploy.sh IMAGE_TAG=${IMAGE_TAG} COMPOSE_FILE=${COMPOSE_FILE} ES_USER=${ES_USER} ES_PASS=${ES_PASS}
-      ES_HOST=${ES_HOST} ES_ALL=${ES_ALL} ES_CLUSTER_SETTINGS=${ES_CLUSTER_SETTINGS} ES_INDICES=${ES_INDICES}
-      ES_INDICES_SETTINGS=${ES_INDICES_SETTINGS} ES_SHARDS=${ES_SHARDS} ES_SHARDS_SETTINGS=${ES_SHARDS_SETTINGS}
-      ES_SNAPSHOTS=${ES_SNAPSHOTS} ES_TIMEOUT=${ES_TIMEOUT} ES_CLUSTERINFO_INTERVAL=${ES_CLUSTERINFO_INTERVAL}
-  environment:
-    name: pro
-  only:
-    - master
-  when: manual
+    STACK: elastic
