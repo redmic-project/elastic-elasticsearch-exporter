@@ -1,11 +1,14 @@
-version: '3.5'
+version: '3.9'
 
 services:
   elasticsearch-exporter:
     image: ${IMAGE_NAME:-quay.io/prometheuscommunity/elasticsearch-exporter}:${IMAGE_TAG:-latest}
     environment:
-      ES_URI: ${ES_PROTOCOL}://${ES_USER}:${ES_PASS}@${ES_HOST}:${ES_PORT}
       WEB_LISTEN_ADDRESS: :${UI_PORT}
+      LOG_LEVEL:
+      ES_URI: ${ES_PROTOCOL}://${ES_HOST}:${ES_PORT}
+      ES_USERNAME:
+      ES_PASSWORD:
       ES_ALL:
       ES_CLUSTER_SETTINGS:
       ES_INDICES:
